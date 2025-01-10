@@ -1,0 +1,3 @@
+﻿ Add-Migration initial-db-create -context DataLayer.MoneyMGTContext -OutputDir Migrations
+
+ update-database -context DataLayer.MoneyMGTContext
