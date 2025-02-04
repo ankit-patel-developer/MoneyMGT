@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Services.Interfaces;
+using Services.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +33,13 @@ namespace MoneyMGTAPI
             services.AddControllers();
 
             #region Repositories
-
+            services.AddTransient<IBankRepository, BankRepository>();
+            services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddTransient<IPayeeRepository, PayeeRepository>();
+            services.AddTransient<IBankTransactionRepository, BankTransactionRepository>();
+            services.AddTransient<ICreditcardRepository, CreditcardRepository>();
+            services.AddTransient<ISourceRepository, SourceRepository>();            
+            services.AddTransient<IEntityMonitorRepository, EntityMonitorRepository>();
             #endregion
 
             #region MoneyMGTContext

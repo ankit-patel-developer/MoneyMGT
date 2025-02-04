@@ -198,7 +198,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\2025-Projects\\MoneyMGTAPI\\DataLayer\\DataLayer.csproj": {
+                "projectPath": "C:\\2025-Projects\\MoneyMGTAPI\\DataLayer\\DataLayer.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

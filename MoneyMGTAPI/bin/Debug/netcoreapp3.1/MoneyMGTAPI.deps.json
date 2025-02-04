@@ -1135,6 +1135,9 @@
         }
       },
       "Services/1.0.0": {
+        "dependencies": {
+          "DataLayer": "1.0.0"
+        },
         "runtime": {
           "Services.dll": {}
         },
