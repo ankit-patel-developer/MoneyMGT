@@ -29,5 +29,6 @@ namespace MoneyMGTAPI.Controllers
             var allBanks = _bankRepo.GetAllBanks();
             return Ok(allBanks);
         }
+    
     }
 }
