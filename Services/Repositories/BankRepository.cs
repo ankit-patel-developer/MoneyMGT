@@ -18,7 +18,9 @@ namespace Services.Repositories
 
         public Bank AddBank(Bank bank)
         {
-            throw new NotImplementedException();
+            var result = appDbContext.Banks.Add(bank);
+            appDbContext.SaveChanges();
+            return result.Entity;
         }
 
         public Bank EditBank(Bank bank)
