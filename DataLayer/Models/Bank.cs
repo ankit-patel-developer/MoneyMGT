@@ -14,6 +14,8 @@ namespace DataLayer.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BankId { get; set; }
         [Required(ErrorMessage = "Bank Name is required")]
+        
+        [StringLength(20)]
         public string BankName { get; set; }
 
         public ICollection<Account> Accounts { get; set; }
