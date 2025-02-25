@@ -4,6 +4,7 @@ using System.Text;
 using DataLayer;
 using DataLayer.Models;
 using Services.Interfaces;
+using System.Linq;
 
 namespace Services.Repositories
 {
@@ -25,7 +26,21 @@ namespace Services.Repositories
 
         public Bank EditBank(Bank bank)
         {
-            throw new NotImplementedException();
+            var result = appDbContext.Banks.Where(x => x.BankId == bank.BankId).FirstOrDefault();
+            if (result != null)
+            {
+                result.BankName = bank.BankName;
+
+                appDbContext.SaveChanges();
+                return bank;
+
+                // check for null
+                // return null;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public IEnumerable<Bank> GetAllBanks()
@@ -35,7 +50,7 @@ namespace Services.Repositories
 
         public Bank GetBank(int bankId)
         {
-            throw new NotImplementedException();
+            return appDbContext.Banks.Where(x => x.BankId == bankId).FirstOrDefault();
         }
     }
 }

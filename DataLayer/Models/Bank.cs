@@ -15,7 +15,7 @@ namespace DataLayer.Models
         public int BankId { get; set; }
         [Required(ErrorMessage = "Bank Name is required")]
         
-        [StringLength(20)]
+        [StringLength(20,ErrorMessage = "Bank Name must be less than 20 characters!")]
         public string BankName { get; set; }
 
         public ICollection<Account> Accounts { get; set; }
