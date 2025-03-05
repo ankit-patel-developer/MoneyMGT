@@ -13,6 +13,12 @@ namespace DataLayer
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // UNIQUE AccountNumber 
+            modelBuilder.Entity<Account>(entity => {
+                entity.HasIndex(e => e.AccountNumber).IsUnique();
+            });
+
+
             // configure FK-RK (BankTransactions-Banks) here
             modelBuilder
             .Entity<BankTransaction>()
