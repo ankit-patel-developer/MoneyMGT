@@ -9,6 +9,5 @@ namespace Services.Interfaces
     public interface ISourceRepository
     {
         IEnumerable<Source> GetAllSources();
-        BankTransaction BankInputFromSource(BankTransaction bankTransaction);
     }
 }

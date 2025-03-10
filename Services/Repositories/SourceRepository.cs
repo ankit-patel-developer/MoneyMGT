@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DataLayer;
 using DataLayer.Models;
 using Services.Interfaces;
 
@@ -8,14 +9,16 @@ namespace Services.Repositories
 {
     public class SourceRepository : ISourceRepository
     {
-        public BankTransaction BankInputFromSource(BankTransaction bankTransaction)
+        private readonly MoneyMGTContext appDbContext;
+
+        public SourceRepository(MoneyMGTContext appDbContext)
         {
-            throw new NotImplementedException();
+            this.appDbContext = appDbContext;
         }
 
         public IEnumerable<Source> GetAllSources()
         {
-            throw new NotImplementedException();
+            return appDbContext.Sources;
         }
     }
 }
