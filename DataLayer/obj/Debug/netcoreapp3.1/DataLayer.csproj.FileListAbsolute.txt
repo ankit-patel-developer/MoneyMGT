@@ -10,4 +10,3 @@ C:\2025-Projects\MoneyMGTAPI\DataLayer\obj\Debug\netcoreapp3.1\DataLayer.pdb
 C:\2025-Projects\MoneyMGTAPI\DataLayer\bin\Debug\netcoreapp3.1\DataLayer.runtimeconfig.json
 C:\2025-Projects\MoneyMGTAPI\DataLayer\bin\Debug\netcoreapp3.1\DataLayer.runtimeconfig.dev.json
 C:\2025-Projects\MoneyMGTAPI\DataLayer\obj\Debug\netcoreapp3.1\DataLayer.genruntimeconfig.cache
-C:\2025-Projects\MoneyMGTAPI\DataLayer\obj\Debug\netcoreapp3.1\DataLayer.csproj.AssemblyReference.cache

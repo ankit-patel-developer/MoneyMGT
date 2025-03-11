@@ -21,7 +21,7 @@ namespace MoneyMGTAPI.Controllers
             _sourceRepo = sourceRepo;
         }
 
-        // react ok
+        // ok
         [HttpGet]
         [Route("allSources")]
         public IActionResult GetAllSources()
