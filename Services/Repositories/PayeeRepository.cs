@@ -20,7 +20,9 @@ namespace Services.Repositories
 
         public Payee AddPayee(Payee payee)
         {
-            throw new NotImplementedException();
+            var result = appDbContext.Payees.Add(payee);
+            appDbContext.SaveChanges();
+            return result.Entity;
         }
 
         public Payee EditPayee(Payee payee)
@@ -46,7 +48,12 @@ namespace Services.Repositories
 
         public List<string> GetAllPayeeTypes()
         {
-            throw new NotImplementedException();
+            List<string> payeeTypes = new List<string>();
+            foreach (string payeeType in Enum.GetNames(typeof(PayeeType)))
+            {
+                payeeTypes.Add(payeeType);
+            }
+            return payeeTypes;
         }
 
         public Payee GetPayee(int payeeId)

@@ -67,7 +67,7 @@ namespace MoneyMGTAPI.Controllers
         // ok
         [HttpPost]
         [Route("withdrawToPayee")]
-        public IActionResult withdrawToPayee(BankTransaction bankTransaction)
+        public IActionResult WithdrawToPayee(BankTransaction bankTransaction)
         {
             _response = new APIResponse();
             try
