@@ -1,13 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DataLayer;
 using DataLayer.Models;
 using Services.Interfaces;
+using System.Linq;
 
 namespace Services.Repositories
 {
     public class PayeeRepository : IPayeeRepository
     {
+        private readonly MoneyMGTContext appDbContext;
+
+        public PayeeRepository(MoneyMGTContext appDbContext)
+        {
+            this.appDbContext = appDbContext;
+        }
+
+
         public Payee AddPayee(Payee payee)
         {
             throw new NotImplementedException();
@@ -20,7 +30,13 @@ namespace Services.Repositories
 
         public IEnumerable<Payee> GetAllPayees()
         {
-            throw new NotImplementedException();
+            List<Payee> payees = new List<Payee>();
+            var payeesDb = appDbContext.Payees;
+            if (payeesDb != null)
+            {
+                payees = payeesDb.ToList();
+            }
+            return payees;
         }
 
         public IEnumerable<Payee> GetAllPayeesCC()

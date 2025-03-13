@@ -10,7 +10,7 @@ namespace Services.Interfaces
     public interface IBankTransactionRepository
     {
         BankTransaction DepositFromSource(BankTransaction bankTransaction);
-        BankTransaction AddBankTransaction(BankTransaction bankTransaction);
+        BankTransaction WithdrawToPayee(BankTransaction bankTransaction);
         List<string> GetTransactionStatusTypes();
         AccountStatement GetAccountStatementAll(AccountVM account);
         BankStatement GetBankStatement(Bank bank);
