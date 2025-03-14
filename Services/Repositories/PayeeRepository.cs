@@ -23,12 +23,7 @@ namespace Services.Repositories
             var result = appDbContext.Payees.Add(payee);
             appDbContext.SaveChanges();
             return result.Entity;
-        }
-
-        public Payee EditPayee(Payee payee)
-        {
-            throw new NotImplementedException();
-        }
+        }     
 
         public IEnumerable<Payee> GetAllPayees()
         {
@@ -58,7 +53,30 @@ namespace Services.Repositories
 
         public Payee GetPayee(int payeeId)
         {
-            throw new NotImplementedException();
+            return appDbContext.Payees.Where(x => x.PayeeId == payeeId).FirstOrDefault();
+        }
+
+        public Payee EditPayee(Payee payee)
+        {
+            var result = appDbContext.Payees.Where(x => x.PayeeId == payee.PayeeId).FirstOrDefault();
+            if (result != null)
+            {
+                result.PayeeName = payee.PayeeName;
+                result.Description = payee.Description;
+                result.PayeeACNumber = payee.PayeeACNumber;
+                result.Balance = payee.Balance;
+                result.PayeeType = payee.PayeeType;
+
+                appDbContext.SaveChanges();
+                return payee;
+
+                // check for null
+                // return null;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
