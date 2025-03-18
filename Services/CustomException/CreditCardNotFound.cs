@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Services.CustomException
 {
-    class CreditCardNotFound
+    public class CreditCardNotFound : Exception
     {
+        public CreditCardNotFound(string message) : base(message)
+        {
+
+        }
     }
 }

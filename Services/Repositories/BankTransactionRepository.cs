@@ -23,7 +23,7 @@ namespace Services.Repositories
 
         // + bank from source
         // TransactionType.In
-        // Deposit Transaction
+        // Deposit Transaction to Bank
         public BankTransaction DepositFromSource(BankTransaction bankTransaction)
         {
             // 1)
@@ -64,6 +64,7 @@ namespace Services.Repositories
         // - bank
         // + cc
         // TransactionType.Out
+        // Withdraw Transaction from Bank
         public BankTransaction WithdrawToPayee(BankTransaction bankTransaction)
         {
             // 1)
