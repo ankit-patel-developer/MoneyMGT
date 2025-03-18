@@ -45,7 +45,7 @@ namespace Services.Repositories
 
         // - cc
         // TransactionType.Out
-        public CreditCardTransaction AddCCTransaction(CreditCardTransaction ccTransaction)
+        public CreditCardTransaction PayByCreditCard(CreditCardTransaction ccTransaction)
         {
             // 0)
             // check for Payee and CreditCard Exists or not

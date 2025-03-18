@@ -36,9 +36,16 @@ namespace Services.Repositories
             return payees;
         }
 
-        public IEnumerable<Payee> GetAllPayeesCC()
+        public IEnumerable<Payee> GetAllPayeesForCC()
         {
-            throw new NotImplementedException();
+            List<Payee> payees = new List<Payee>();
+            var payeesDb = appDbContext.Payees
+                            .Where(x=>x.PayeeType!=PayeeType.CreditCard);
+            if (payeesDb != null)
+            {
+                payees = payeesDb.ToList();
+            }
+            return payees;
         }
 
         public List<string> GetAllPayeeTypes()

@@ -18,10 +18,12 @@ namespace MoneyMGTAPI.Controllers
     {
         private APIResponse _response;
         private readonly ICreditcardRepository _ccRepo;
+        private readonly IPayeeRepository _payeeRepo;
 
-        public CreditCardController(ICreditcardRepository ccRepo)
+        public CreditCardController(ICreditcardRepository ccRepo, IPayeeRepository payeeRepo)
         {
             _ccRepo = ccRepo;
+            _payeeRepo = payeeRepo;
         }
 
         // ok
@@ -33,10 +35,19 @@ namespace MoneyMGTAPI.Controllers
             return Ok(allCCs);
         }
 
-        // wip
+        // ok
+        [HttpGet]
+        [Route("allPayeesForCCs")]
+        public IActionResult GetAllPayeesForCCs()
+        {
+            var allCCs = _payeeRepo.GetAllPayeesForCC();
+            return Ok(allCCs);
+        }
+
+        // ok
         [HttpPost]
-        [Route("addCCTransaction")]
-        public IActionResult AddCCTransaction(CreditCardTransaction ccTransaction)
+        [Route("payByCreditCard")]
+        public IActionResult PayByCreditCard(CreditCardTransaction ccTransaction)
         {
             _response = new APIResponse();
             try
@@ -58,9 +69,9 @@ namespace MoneyMGTAPI.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    _ccRepo.AddCCTransaction(ccTransaction);
+                    _ccRepo.PayByCreditCard(ccTransaction);
                     _response.ResponseCode = 0;
-                    _response.ResponseMessage = "Credit-Card-Transaction Added Successfully !";
+                    _response.ResponseMessage = "Pay with Credit-Card made Successfully !";
                     _response.ResponseError = null;
                     return Ok(_response);
                 }

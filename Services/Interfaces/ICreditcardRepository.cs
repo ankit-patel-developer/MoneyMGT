@@ -11,6 +11,6 @@ namespace Services.Interfaces
     {
         IEnumerable<CreditCard> GetAllCCs();
         CreditCardStatement GetCreditCardStatementAll(CreditCard cc);
-        CreditCardTransaction AddCCTransaction(CreditCardTransaction ccTransaction);
+        CreditCardTransaction PayByCreditCard(CreditCardTransaction ccTransaction);
     }
 }

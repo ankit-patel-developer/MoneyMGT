@@ -11,7 +11,7 @@ namespace Services.Interfaces
         IEnumerable<Payee> GetAllPayees();
         Payee AddPayee(Payee payee);
         List<string> GetAllPayeeTypes();
-        IEnumerable<Payee> GetAllPayeesCC();
+        IEnumerable<Payee> GetAllPayeesForCC();
         Payee GetPayee(int payeeId);
         Payee EditPayee(Payee payee);
     }
