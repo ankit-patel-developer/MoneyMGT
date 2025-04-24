@@ -8,6 +8,7 @@ using Services.Interfaces;
 using System.Linq;
 using Services.Utility;
 using Services.CustomException;
+using Microsoft.EntityFrameworkCore;
 
 namespace Services.Repositories
 {
@@ -138,9 +139,105 @@ namespace Services.Repositories
             throw new NotImplementedException();
         }
 
+        // returns for all accounts of selected bank
+        // - bank
+        // TransactionType.Out
+        // + bank from source
+        // TransactionType.In
         public BankStatement GetBankStatement(Bank bank)
         {
-            throw new NotImplementedException();
+            BankStatement bankStatement = new BankStatement();
+            List<BankAccount> bankAccounts = new List<BankAccount>();
+            bankStatement.BankAccounts = bankAccounts;
+            List<Transaction> transactions = new List<Transaction>();
+
+            bankStatement.BankId = bank.BankId;
+            bankStatement.BankName = bank.BankName;
+
+            // finding accounts of bank
+            var accounts = appDbContext.Accounts
+                                .Include(y => y.BankTransactions)
+                                .Where(x => x.BankId == bank.BankId);
+
+            if (accounts != null && accounts.Count()>=1)
+            {
+                foreach (var account in accounts)
+                {
+                    // adding accounts to bank
+                    BankAccount bankAccount = new BankAccount();
+                    bankAccount.AccountId = account.AccountId;
+                    bankAccount.AccountNumber = account.AccountNumber;
+                    bankAccount.AccountType = account.AccountType;
+                    bankAccount.LastBalance = account.Balance;
+                    bankAccount.Transactions = new List<Transaction>();
+
+                    // finding transactions of bank-account
+                    if (account.BankTransactions != null && account.BankTransactions.Count() >= 1)
+                    {
+                        // -/+ bank
+                        // Transactions
+                        foreach (var transaction in account.BankTransactions)
+                        {
+                            // - bank
+                            // payee
+                            if (transaction.SourceId == 0)
+                            {
+                                // Payee
+                                var payee = appDbContext.Payees
+                                                .Where(b => b.PayeeId == transaction.PayeeId).FirstOrDefault();
+
+                                bankAccount.Transactions.Add(new Transaction()
+                                {
+                                    BankTransactionId = transaction.BankTransactionId,
+                                    PayeeId = transaction.PayeeId,
+                                    PayeeName = payee.PayeeName,
+                                    PayeeType = payee.PayeeType,
+                                    AmountPaid = transaction.TransactionAmount,
+                                    TransactionDate = transaction.TransactionDate,
+                                    TransactionStatus = transaction.TransactionStatus,
+                                    CurrentBalance = transaction.CurrentBalance,
+                                    LastBalance = transaction.LastBalance,
+                                    RefCode = transaction.RefCode,
+                                    TransactionType = transaction.TransactionType,
+                                    SourceId = transaction.SourceId,
+                                    SourceName = "N/A"
+                                });
+                            }
+                            // + bank
+                            // source
+                            else
+                            {
+                                // Source
+                                var source = appDbContext.Sources
+                                                .Where(b => b.SourceId == transaction.SourceId).FirstOrDefault();
+
+                                bankAccount.Transactions.Add(new Transaction()
+                                {
+                                    BankTransactionId = transaction.BankTransactionId,
+                                    PayeeId = 0,
+                                    PayeeName = "N/A",
+                                    PayeeType = PayeeType.Others,
+                                    AmountPaid = transaction.TransactionAmount,
+                                    TransactionDate = transaction.TransactionDate,
+                                    TransactionStatus = transaction.TransactionStatus,
+                                    CurrentBalance = transaction.CurrentBalance,
+                                    LastBalance = transaction.LastBalance,
+                                    RefCode = transaction.RefCode,
+                                    TransactionType = transaction.TransactionType,
+                                    SourceId = transaction.SourceId,
+                                    SourceName = source.SourceName
+                                });
+                            }
+                        }
+                    }
+                    bankAccounts.Add(bankAccount);
+                }
+            }
+            else
+            {
+                throw new AccountNotFound("Bank has No Account Yet !");
+            }
+            return bankStatement;
         }
 
         public List<string> GetTransactionStatusTypes()

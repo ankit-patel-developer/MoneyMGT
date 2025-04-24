@@ -115,5 +115,42 @@ namespace MoneyMGTAPI.Controllers
                 return Ok(_response);
             }
         }
+
+
+        // ok
+        [HttpPost]
+        [Route("getBankStatement")]
+        public IActionResult GetBankStatement(Bank bank)
+        {
+            _response = new APIResponse();
+            try
+            {
+                // check for null
+                // bank = null;
+                if (bank == null)
+                {
+                    return BadRequest();
+                }
+
+                // check for exception
+                // throw new Exception();
+
+                return Ok(_transactionRepo.GetBankStatement(bank));
+            }
+            catch (AccountNotFound noAcc)
+            {
+                _response.ResponseCode = -1;
+                _response.ResponseMessage = noAcc.Message.ToString();
+                _response.ResponseError = noAcc.Message.ToString();
+                return Ok(_response);
+            }
+            catch (Exception ex)
+            {
+                _response.ResponseCode = -1;
+                _response.ResponseMessage = "Server Error !";
+                _response.ResponseError = ex.Message.ToString();
+                return Ok(_response);
+            }
+        }
     }
 }
