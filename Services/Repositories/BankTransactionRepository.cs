@@ -176,7 +176,7 @@ namespace Services.Repositories
                     {
                         // -/+ bank
                         // Transactions
-                        foreach (var transaction in account.BankTransactions)
+                        foreach (var transaction in account.BankTransactions.OrderByDescending(x=>x.TransactionDate))
                         {
                             // - bank
                             // payee
