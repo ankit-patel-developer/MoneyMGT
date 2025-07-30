@@ -134,9 +134,73 @@ namespace Services.Repositories
             return result.Entity;
         }
 
-        public AccountStatement GetAccountStatementAll(AccountVM account)
+        public AccountStatement GetAccountStatement(AccountVM account)
         {
-            throw new NotImplementedException();
+            AccountStatement acStatement = new AccountStatement();    
+            acStatement.Transactions = new List<Transaction>();
+
+            var acTransactions = appDbContext.BankTransactions.Where(x => x.AccountId == account.AccountId);
+            if (acTransactions != null && acTransactions.Count() >= 1)
+            {
+                // -/+ bank
+                // Transactions
+                // last 50 transactions
+                foreach (var transaction in acTransactions.OrderByDescending(x => x.TransactionDate).Take(50))
+                {
+                    // - bank
+                    // payee
+                    if (transaction.SourceId == 0)
+                    {
+                        // Payee
+                        var payee = appDbContext.Payees
+                                        .Where(b => b.PayeeId == transaction.PayeeId).FirstOrDefault();
+
+                        acStatement.Transactions.Add(new Transaction()
+                        {
+                            BankTransactionId = transaction.BankTransactionId,
+                            PayeeId = transaction.PayeeId,
+                            PayeeName = payee.PayeeName,
+                            PayeeType = payee.PayeeType,
+                            AmountPaid = transaction.TransactionAmount,
+                            TransactionDate = transaction.TransactionDate,
+                            TransactionStatus = transaction.TransactionStatus,
+                            CurrentBalance = transaction.CurrentBalance,
+                            LastBalance = transaction.LastBalance,
+                            RefCode = transaction.RefCode,
+                            TransactionType = transaction.TransactionType,
+                            SourceId = transaction.SourceId,
+                            SourceName = "N/A"
+                        });
+                    }
+                    // + bank
+                    // source
+                    else
+                    {
+                        // Source
+                        var source = appDbContext.Sources
+                                        .Where(b => b.SourceId == transaction.SourceId).FirstOrDefault();
+
+                        acStatement.Transactions.Add(new Transaction()
+                        {
+                            BankTransactionId = transaction.BankTransactionId,
+                            PayeeId = 0,
+                            PayeeName = "N/A",
+                            PayeeType = PayeeType.Others,
+                            AmountPaid = transaction.TransactionAmount,
+                            TransactionDate = transaction.TransactionDate,
+                            TransactionStatus = transaction.TransactionStatus,
+                            CurrentBalance = transaction.CurrentBalance,
+                            LastBalance = transaction.LastBalance,
+                            RefCode = transaction.RefCode,
+                            TransactionType = transaction.TransactionType,
+                            SourceId = transaction.SourceId,
+                            SourceName = source.SourceName
+                        });
+                    }
+                }
+
+            }
+            return acStatement;
         }
 
         // returns for all accounts of selected bank
@@ -176,7 +240,8 @@ namespace Services.Repositories
                     {
                         // -/+ bank
                         // Transactions
-                        foreach (var transaction in account.BankTransactions.OrderByDescending(x=>x.TransactionDate))
+                        // last 10 transactions
+                        foreach (var transaction in account.BankTransactions.OrderByDescending(x=>x.TransactionDate).Take(10))
                         {
                             // - bank
                             // payee

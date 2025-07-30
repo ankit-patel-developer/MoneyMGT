@@ -12,7 +12,7 @@ namespace Services.Interfaces
         BankTransaction DepositFromSource(BankTransaction bankTransaction);
         BankTransaction WithdrawToPayee(BankTransaction bankTransaction);
         List<string> GetTransactionStatusTypes();
-        AccountStatement GetAccountStatementAll(AccountVM account);
+        AccountStatement GetAccountStatement(AccountVM account);
         BankStatement GetBankStatement(Bank bank);
     }
 }

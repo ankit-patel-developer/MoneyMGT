@@ -119,6 +119,36 @@ namespace MoneyMGTAPI.Controllers
 
         // ok
         [HttpPost]
+        [Route("getAccountStatement")]
+        public IActionResult GetAccountStatement(AccountVM accountVM)
+        {
+            _response = new APIResponse();
+            try
+            {
+                // check for null
+                // accountVM = null;
+                if (accountVM == null)
+                {
+                    return BadRequest();
+                }
+
+                // check for exception
+                // throw new Exception();
+
+                return Ok(_transactionRepo.GetAccountStatement(accountVM));
+            }         
+            catch (Exception ex)
+            {
+                _response.ResponseCode = -1;
+                _response.ResponseMessage = "Server Error !";
+                _response.ResponseError = ex.Message.ToString();
+                return Ok(_response);
+            }
+        }
+
+
+        // ok
+        [HttpPost]
         [Route("getBankStatement")]
         public IActionResult GetBankStatement(Bank bank)
         {
@@ -152,5 +182,6 @@ namespace MoneyMGTAPI.Controllers
                 return Ok(_response);
             }
         }
+
     }
 }
