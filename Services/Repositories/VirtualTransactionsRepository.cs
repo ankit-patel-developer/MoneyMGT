@@ -33,6 +33,7 @@ namespace Services.Repositories
 
 exec VT_DEPOSIT 1, 11223344
 
+
 Alter PROCEDURE VT_DEPOSIT 
       @BankId int, 
 	  @AccountNumber int	   
@@ -62,6 +63,10 @@ BEGIN
 	declare @cnt int = 0;
 	WHILE @cnt<10
 	BEGIN
+
+		-- Introduce a 1-second delay
+		WAITFOR DELAY '00:00:01';
+
 		-- find current account balance
 		select @currentBalance_ = Balance, @AccountId = AccountId
 		from Accounts
@@ -145,6 +150,7 @@ BEGIN
 END
 GO  
 
+
   
 
 
@@ -177,7 +183,9 @@ source id = 2
         public bool WithdrawToPayee()
         {
 			/*
-CREATE PROCEDURE VT_WITHDRAW 
+
+
+ALTER PROCEDURE VT_WITHDRAW 
       @BankId int, 
 	  @AccountNumber int	   
 AS 
@@ -209,6 +217,10 @@ BEGIN
 		declare @cnt int = 0;
 		WHILE @cnt<10
 		BEGIN
+
+			-- Introduce a 1-second delay
+			WAITFOR DELAY '00:00:01';
+
 			-- find current account balance
 			select @currentBalance_ = Balance, @AccountId = AccountId
 			from Accounts
@@ -279,6 +291,7 @@ BEGIN
 					
 					declare @payeeType int;
 					declare @payeeBalance decimal(18,2);
+					declare @updatedPayeeBalance decimal(18,2);
 					select @payeeType = PayeeType, @payeeBalance = Balance
 					from Payees
 					where PayeeId=@PayeeId;
@@ -287,13 +300,23 @@ BEGIN
 					-- add amount @ cc balance
 					if @payeeType=3 
 					begin
-						select @payeeBalance = @payeeBalance + @TransactionAmount;
-					end
+						select @updatedPayeeBalance = @payeeBalance + @TransactionAmount;
 
-					-- add transaction @ CreditCardTransactions db table
-					-- with same RefCode generated @ BankTransactions db table
-					-- with transaction type In
-						
+						-- update Balance field of Payees table where
+						-- PayeeId=@PayeeId
+						update Payees 
+						set Balance=@updatedPayeeBalance
+						where PayeeId=@PayeeId
+
+						-- add transaction @ CreditCardTransactions db table
+						-- with same RefCode generated @ BankTransactions db table
+						-- with transaction type In
+						select @TransactionType = 0; -- IN
+						insert into CreditCardTransactions
+						(CreditCardId, TransactionAmount, TransactionDate, TransactionStatus, PayeeId, LastBalance, CurrentBalance, RefCode, TransactionType )
+						values
+						(@PayeeId, @TransactionAmount, @TransactionDate, @TransactionStatus, @PayeeId, @PayeeBalance, @updatedPayeeBalance, @RefCode, @TransactionType);				
+					end
 					
 				COMMIT TRANSACTION;
 				SET @cnt = @cnt + 1;
@@ -320,7 +343,7 @@ BEGIN
 	END CATCH
 	
 END
-GO   
+GO    
 			*/
 
 			return true;
