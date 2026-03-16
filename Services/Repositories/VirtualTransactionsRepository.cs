@@ -9,6 +9,8 @@ using System.Linq;
 using Services.Utility;
 using Services.CustomException;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 
 namespace Services.Repositories
 {
@@ -25,8 +27,15 @@ namespace Services.Repositories
         // + bank from source
         // TransactionType.In
         // Deposit Transaction to Bank
-        public bool DepositFromSource()
+        public VTObject DepositVTAsync(VTObject vtObject)
         {
+
+			var result = appDbContext.Database.ExecuteSqlRawAsync(
+	"EXECUTE VT_DEPOSIT @BankId, @AccountNumber",
+	new SqlParameter("@BankId", 1), new SqlParameter("@AccountNumber", 66778899));
+
+		
+
 			/*
             
 
@@ -173,7 +182,7 @@ source id = 2
 
             */
 
-			return true;
+			return vtObject;
         }
 
         // - bank

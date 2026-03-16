@@ -40,6 +40,7 @@ namespace MoneyMGTAPI
             services.AddTransient<ICreditcardRepository, CreditcardRepository>();
             services.AddTransient<ISourceRepository, SourceRepository>();            
             services.AddTransient<IEntityMonitorRepository, EntityMonitorRepository>();
+            services.AddTransient<IVirtualTransactionsRepository, VirtualTransactionsRepository>();
             #endregion
 
             #region MoneyMGTContext
