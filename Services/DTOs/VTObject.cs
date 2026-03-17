@@ -8,6 +8,7 @@ namespace Services.DTOs
     {
         public int BankId { get; set; }
         public int AccountNumber { get; set; }
+        public int NumberOfTransactions { get; set; }
         public bool TransactionResponse { get; set; }
 
     }

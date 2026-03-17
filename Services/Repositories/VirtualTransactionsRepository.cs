@@ -29,23 +29,38 @@ namespace Services.Repositories
         // Deposit Transaction to Bank
         public VTObject DepositVTAsync(VTObject vtObject)
         {
-
-			var result = appDbContext.Database.ExecuteSqlRawAsync(
-	"EXECUTE VT_DEPOSIT @BankId, @AccountNumber",
-	new SqlParameter("@BankId", 1), new SqlParameter("@AccountNumber", 66778899));
-
-		
+            try
+            {
+				// SERVER ERROR
+				/*
+				var result = appDbContext.Database.ExecuteSqlRaw(
+							"EXECUTE VT_DEPOSIT @BankId, @AccountNumber,@NumberOfTransactions",
+							new SqlParameter("@BankId", vtObject.BankId), new SqlParameter("@AccountNumber", vtObject.AccountNumber));
+				*/
+				
+				var result = appDbContext.Database.ExecuteSqlRaw(
+							"EXECUTE VT_DEPOSIT @BankId, @AccountNumber,@NumberOfTransactions",
+							new SqlParameter("@BankId", vtObject.BankId), new SqlParameter("@AccountNumber", vtObject.AccountNumber), new SqlParameter("@NumberOfTransactions", vtObject.NumberOfTransactions));
+				
+				vtObject.TransactionResponse = true;
+			}
+			catch (Exception ex)
+            {
+				vtObject.TransactionResponse = false;
+            }
+			return vtObject;
 
 			/*
             
 
 
-exec VT_DEPOSIT 1, 11223344
+exec VT_DEPOSIT 1, 11223344, 10
 
 
-Alter PROCEDURE VT_DEPOSIT 
+ALTER PROCEDURE [dbo].[VT_DEPOSIT] 
       @BankId int, 
-	  @AccountNumber int	   
+	  @AccountNumber int,
+	  @NumberOfTransactions int   
 AS 
 BEGIN
  
@@ -70,7 +85,8 @@ BEGIN
 
 	-- 10 TRANSACTIONS 
 	declare @cnt int = 0;
-	WHILE @cnt<10
+	-- WHILE @cnt<10
+	WHILE @cnt<@NumberOfTransactions
 	BEGIN
 
 		-- Introduce a 1-second delay
@@ -182,14 +198,14 @@ source id = 2
 
             */
 
-			return vtObject;
-        }
 
-        // - bank
-        // + cc
-        // TransactionType.Out
-        // Withdraw Transaction from Bank
-        public bool WithdrawToPayee()
+		}
+
+		// - bank
+		// + cc
+		// TransactionType.Out
+		// Withdraw Transaction from Bank
+		public bool WithdrawToPayee()
         {
 			/*
 
