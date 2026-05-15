@@ -39,7 +39,7 @@ namespace MoneyMGTAPI.Controllers
                 }
 
                 // check for exception
-                // throw new Exception();             
+                throw new Exception();             
 
                 return Ok(_vtRepo.DepositVTAsync(vtObject));
             }
