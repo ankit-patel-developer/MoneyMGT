@@ -9,9 +9,9 @@ namespace Services.Interfaces
 {
     public interface IVirtualTransactionsRepository
     {
-        VTObject DepositVTAsync(VTObject vtObject);
+        VTObject DepositVT(VTObject vtObject);
 
         // Payee includes CC and other types of Payees
-        bool WithdrawToPayee();    
+        VTObject WithdrawVT(VTObject vtObject);
     }
 }

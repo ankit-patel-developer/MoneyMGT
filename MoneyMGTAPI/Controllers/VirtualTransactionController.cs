@@ -39,15 +39,41 @@ namespace MoneyMGTAPI.Controllers
                 }
 
                 // check for exception
-                throw new Exception();             
+                // throw new Exception();             
 
-                return Ok(_vtRepo.DepositVTAsync(vtObject));
+                return Ok(_vtRepo.DepositVT(vtObject));
             }
             catch (Exception ex)
             {
                 return BadRequest();
             }
-        }    
+        }
+
+        // wip
+        [HttpPost]
+        [Route("withdrawVT")]
+        public IActionResult WithdrawVT(VTObject vtObject)
+        {
+
+            try
+            {
+                // check for null
+                // vtObject = null;
+                if (vtObject == null)
+                {
+                    return BadRequest();
+                }
+
+                // check for exception
+                // throw new Exception();             
+
+                return Ok(_vtRepo.WithdrawVT(vtObject));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
 
     }
 }
