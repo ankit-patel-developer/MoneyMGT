@@ -14,5 +14,6 @@ namespace Services.Interfaces
         List<string> GetTransactionStatusTypes();
         AccountStatement GetAccountStatement(AccountVM account);
         BankStatement GetBankStatement(Bank bank);
+        MonthlyAccountMonitorData GetMonitorAccountMonthly(MonthlyAccountMonitorData monthlyAccountMonitorData);
     }
 }

@@ -309,5 +309,11 @@ namespace Services.Repositories
         {
             throw new NotImplementedException();
         }
+
+        // wip
+        public MonthlyAccountMonitorData GetMonitorAccountMonthly(MonthlyAccountMonitorData monthlyAccountMonitorData)
+        {
+            throw new NotImplementedException();
+        }  
     }
 }
